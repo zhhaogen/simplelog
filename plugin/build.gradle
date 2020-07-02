@@ -1,0 +1,24 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.12.0'
+}
+
+dependencies {
+    implementation(project(":generator"))
+}
+gradlePlugin {
+    plugins {
+        simpleLogPlugin {
+            id = GROUP_ID+"."+project.getName()
+            displayName = 'SimpleLogPlugin'
+            description = '一个简单的日志工具'
+            implementationClass = 'cn.zhg.simplelog.plugin.SimpleLogPlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/zhhaogen/simplelog.git'
+    vcsUrl = 'https://github.com/zhhaogen/simplelog.git'
+    tags = ['log', 'simplelog']
+}

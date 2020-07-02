@@ -1,0 +1,56 @@
+subprojects {
+    //所有子项目通用配置
+    apply plugin: 'java' 
+    apply plugin: 'maven-publish'
+    group = GROUP_ID
+    version = LIBRARY_VERSION
+
+    sourceCompatibility = SOURCE_VERSION
+    targetCompatibility = SOURCE_VERSION
+
+    dependencies {
+        testImplementation "junit:junit:$JUNIT_VERSION"
+    }
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+    tasks.withType(Jar) {
+        manifest {
+            attributes('Implementation-Title': project.name,
+                    'Implementation-Version': LIBRARY_VERSION
+            )
+        }
+    }
+    task sourceJar(type: Jar) {
+        from sourceSets.main.allJava
+        classifier "sources"
+    }
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId project.group
+                artifactId project.name
+                version project.version
+                from components.java
+                artifact sourceJar
+                artifact javadocJar
+            }
+        }
+        repositories {
+            maven {
+                url LOCAL_REPORT_URL
+                authentication{
+                    basic(BasicAuthentication)
+                }
+                credentials{
+                    username=USER_NAME
+                    password=USER_PWD
+                }
+            }
+        }
+    }
+}

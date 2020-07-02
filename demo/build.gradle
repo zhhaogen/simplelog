@@ -1,0 +1,16 @@
+buildscript {
+    dependencies {
+        classpath "$GROUP_ID:plugin:$LIBRARY_VERSION"
+    }
+}
+try{
+    apply plugin:"${GROUP_ID}.plugin"
+}catch(Exception ex){
+    //开发过程中难免遇到一些异常,为了方便调试忽略它
+    System.out.println("插件异常:");
+    ex.printStackTrace(System.err);
+}
+dependencies {
+    implementation(project(":simplelog"))
+}
+
